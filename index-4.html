@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Surprise!</title>
+  <style>
+    :root { color-scheme: light; --ink:#25221e; --paper:#eee8da; --red:#742c2c; }
+    * { box-sizing:border-box; }
+    body { margin:0; padding:48px 18px; background:#22211f; color:var(--ink); font-family:Georgia,'Times New Roman',serif; }
+    main { max-width:850px; margin:auto; padding:40px; background:radial-gradient(ellipse at top,#faf6ec,var(--paper)); border:1px solid #b0a590; box-shadow:0 18px 60px #0007; }
+    header { text-align:center; border-top:4px solid var(--ink); padding-top:22px; }
+    .eyebrow { font:11px Arial,sans-serif; text-transform:uppercase; letter-spacing:3px; color:var(--red); }
+    h1 { margin:12px 0; font-size:clamp(30px,6vw,48px); font-weight:normal; text-transform:uppercase; letter-spacing:2px; }
+    .instructions { margin:0 0 25px; font-style:italic; line-height:1.5; }
+    table { width:100%; border-collapse:collapse; border-top:3px solid var(--ink); border-bottom:3px solid var(--ink); }
+    thead th { padding:12px 0; text-align:left; font:11px Arial,sans-serif; letter-spacing:2px; text-transform:uppercase; border-bottom:1px solid var(--ink); }
+    thead th:first-child { width:80px; }
+    tbody th { vertical-align:top; padding:23px 14px 23px 0; font-size:26px; text-align:left; font-weight:normal; }
+    td { padding:22px 0; border-bottom:1px solid #aca18e; }
+    tbody th { border-bottom:1px solid #aca18e; }
+    tr:last-child td,tr:last-child th { border-bottom:0; }
+    .line { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; }
+    p { margin:0; line-height:1.6; }
+    .concealed { color:#716b60; font-style:italic; }
+    button { flex-shrink:0; min-height:44px; padding:10px 13px; border:1px solid var(--ink); background:transparent; color:var(--ink); font:11px Arial,sans-serif; letter-spacing:1px; text-transform:uppercase; cursor:pointer; }
+    button:hover { background:var(--ink); color:var(--paper); }
+    button:focus-visible { outline:3px solid var(--red); outline-offset:3px; }
+    .modifier { border-left:2px solid var(--red); margin-top:20px; padding-left:14px; }
+    .modifier strong { color:var(--red); }
+    .modifier p { font-size:15px; }
+    .pending { color:#716b60; font-size:14px; font-style:italic; }
+    footer { margin-top:22px; display:flex; justify-content:space-between; align-items:center; gap:15px; }
+    footer p { font-size:12px; color:#716b60; }
+    [hidden] { display:none !important; }
+    @media(max-width:550px) { body { padding:18px 10px; } main { padding:24px 18px; } thead th:first-child { width:58px; } tbody th { font-size:23px; } .line { flex-wrap:wrap; gap:10px; } .line>div { width:100%; } footer { align-items:flex-start; } }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="eyebrow">A birthday roll table</div>
+    <h1>Surprise!</h1>
+    <p class="instructions">Roll a d10. Reveal your result. If the result is already revealed, reveal the modifier.</p>
+  </header>
+  <table aria-label="Birthday dice roll results">
+    <thead><tr><th scope="col">Roll</th><th scope="col">Outcome</th></tr></thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>
+          <p>You get nothing. Your birthday was forgotten.</p>
+          <div class="modifier line">
+            <div><p id="modifier-1" hidden><strong>Lord's Privilege:</strong> gain a 1/lifetime reroll.</p></div>
+            <button type="button" data-target="modifier-1" aria-controls="modifier-1" aria-expanded="false" aria-label="Reveal modifier for roll 1">Reveal modifier</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">2–4</th>
+        <td>
+          <div class="line">
+            <div><p id="outcome-2" hidden>The power of friendship! Upgrade your die and roll again.</p><p class="concealed">Reveal When Rolled</p></div>
+            <button type="button" data-target="outcome-2" aria-controls="outcome-2" aria-expanded="false" aria-label="Reveal outcome for rolls 2 to 4">Reveal</button>
+          </div>
+          <div class="modifier line">
+            <div><p><strong>Synchro Shokan!</strong></p><p id="modifier-2" hidden>if any friend is still nearby, they may roll a d4 and add their result to your next roll only.</p></div>
+            <button type="button" data-target="modifier-2" aria-controls="modifier-2" aria-expanded="false" aria-label="Reveal modifier for rolls 2 to 4">Reveal modifier</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">5–7</th>
+        <td>
+          <div class="line">
+            <div><p id="outcome-5" hidden>Your real gift is the friends you made along the way. You may roll again if you downgrade your dice.</p><p class="concealed">Reveal When Rolled</p></div>
+            <button type="button" data-target="outcome-5" aria-controls="outcome-5" aria-expanded="false" aria-label="Reveal outcome for rolls 5 to 7">Reveal</button>
+          </div>
+          <div class="modifier line">
+            <div><p><strong>It's Not Over Yet!</strong></p><p id="modifier-5" hidden>if it is still your birthday, or you have yet to go to sleep, gain +1 to your next roll only.</p></div>
+            <button type="button" data-target="modifier-5" aria-controls="modifier-5" aria-expanded="false" aria-label="Reveal modifier for rolls 5 to 7">Reveal modifier</button>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">8+</th>
+        <td>
+          <div class="line">
+            <div><p id="outcome-8" hidden>Your friends love you! You get a present.</p><p class="concealed">Reveal When Rolled</p></div>
+            <button type="button" data-target="outcome-8" aria-controls="outcome-8" aria-expanded="false" aria-label="Reveal outcome for rolls 8 and above">Reveal</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <footer><button type="button" id="reset">Reset reveals</button></footer>
+  <noscript><p>Please enable JavaScript to reveal your outcomes.</p></noscript>
+</main>
+<script>
+  // Each button controls only its own outcome or modifier.
+  const revealButtons = document.querySelectorAll('[data-target]');
+  function setRevealed(button, revealed) {
+    const content = document.getElementById(button.dataset.target);
+    content.hidden = !revealed;
+    const placeholder = content.parentElement.querySelector('.concealed');
+    if (placeholder) placeholder.hidden = revealed;
+    button.setAttribute('aria-expanded', String(revealed));
+    const modifier = button.dataset.target.startsWith('modifier');
+    button.textContent = revealed ? (modifier ? 'Hide modifier' : 'Hide') : (modifier ? 'Reveal modifier' : 'Reveal');
+    button.setAttribute('aria-label', button.getAttribute('aria-label').replace(/^(Reveal|Hide)/, revealed ? 'Hide' : 'Reveal'));
+  }
+  revealButtons.forEach(button => button.addEventListener('click', () => {
+    setRevealed(button, button.getAttribute('aria-expanded') !== 'true');
+  }));
+  document.getElementById('reset').addEventListener('click', () => {
+    revealButtons.forEach(button => setRevealed(button, false));
+  });
+</script>
+</body>
+</html>
